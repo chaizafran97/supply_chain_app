@@ -74,12 +74,22 @@ class _HomePageState extends State<HomePage> {
 
   late DeployedContract contract;
   late ContractFunction initializeCargo;
+  late ContractFunction cargoBought;
+  late ContractFunction customsCheck;
+  late ContractFunction cargoShipping;
+  late ContractFunction cargoReceieved;
+  late ContractFunction viewCargo;
 
   Future<void> getContractFunctions() async {
     contract = DeployedContract(
         ContractAbi.fromJson(abi, "SupplyChain"), contractAddress);
 
     initializeCargo = contract.function('initializeCargo');
+    cargoBought = contract.function('cargoBought');
+    customsCheck = contract.function('customsCheck');
+    cargoShipping = contract.function('cargoShipping');
+    cargoReceieved = contract.function('cargoReceieved');
+    viewCargo = contract.function('viewCargo');
   }
 
   Future<List<dynamic>> readContract(
@@ -111,7 +121,51 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Supply Chain Block Chain"),
+        ),
+        body: Column(
+          //mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(padding: EdgeInsets.all(5)),
+            ElevatedButton(
+                onPressed: () async {
+                  var result = await readContract(initializeCargo, []);
+                },
+                child: Text("Initialize Cargo")),
+            Padding(padding: EdgeInsets.all(5)),
+            ElevatedButton(
+                onPressed: () async {
+                  var result = await readContract(cargoBought, []);
+                },
+                child: Text("Buy Cargo")),
+            Padding(padding: EdgeInsets.all(5)),
+            ElevatedButton(
+                onPressed: () async {
+                  var result = await readContract(customsCheck, []);
+                },
+                child: Text("Customs Check")),
+            Padding(padding: EdgeInsets.all(5)),
+            ElevatedButton(
+                onPressed: () async {
+                  var result = await readContract(cargoShipping, []);
+                },
+                child: Text("Ship Cargo")),
+            Padding(padding: EdgeInsets.all(5)),
+            ElevatedButton(
+                onPressed: () async {
+                  var result = await readContract(cargoReceieved, []);
+                },
+                child: Text("Cargo Received")),
+            Padding(padding: EdgeInsets.all(5)),
+            ElevatedButton(
+                onPressed: () async {
+                  var result = await readContract(viewCargo, []);
+                },
+                child: Text("View Cargo")),
+          ],
+        ));
   }
 }
